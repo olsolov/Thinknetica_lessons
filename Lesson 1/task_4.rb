@@ -11,13 +11,10 @@ discriminant = b**2 - 4 * a * c
 
 puts "D = #{discriminant}" 
 
-square_root = Math.sqrt(discriminant)
-  if discriminant > 0
-  end
-
 if discriminant < 0	
   puts "Корней нет"
 elsif discriminant > 0
+  square_root = Math.sqrt(discriminant)
   x1 = (- b + square_root)/(2 * a)
   x2 = (- b - square_root)/(2 * a) 
   puts "x1 = #{x1}"
