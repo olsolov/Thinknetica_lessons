@@ -1,5 +1,4 @@
 select_month = []
-sum = 0
 
 print 'Введите число: '
 day = gets.to_i
@@ -19,9 +18,8 @@ month_days[1] = 29 if leap_year
 if month == 1 
   date_number = day
 else
-  select_month = month_days.take(month - 1)
-  select_month.each { |days| sum += days }
-  date_number = day + sum
+  select_month = month_days.take(month - 1).sum
+  date_number = day + select_month
 end 
 
 puts "Порядковый номер даты: #{date_number}"

@@ -1,4 +1,4 @@
-buy ={}
+buy = {}
 count = 0
 total = 0
 
@@ -18,7 +18,7 @@ loop do
 
   puts "------------------"
 
-  buy[product]={price => quant}
+  buy[product] = {price => quant}
   count = price * quant
 
   total += count

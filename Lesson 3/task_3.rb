@@ -1,11 +1,7 @@
 fibo = [0, 1]
 
-i = 0
-
 loop do
-  fibo_next = fibo[i] + fibo[i+1]
-
-  i += 1
+  fibo_next = fibo[-1] + fibo[-2]
 
   break if fibo_next > 100 
 
