@@ -9,7 +9,7 @@ class Station
   end
 
   def show_trains
-    @trains.each { |train| train}
+    @trains.each { |train| puts train.num}
   end
 
   def show_type
@@ -17,12 +17,12 @@ class Station
     count_cargo = 0
 
     @trains.each do |train|
-      count_pass +=1 if train.type["pass"]
-      count_pass +=1 if train.type["cargo"]
-      
-      "Quantity of passenger trains: #{count_pass}"
-      "Quantity of cargo trains: #{count_cargo}"
+      count_pass +=1 if train.type == "pass"
+      count_cargo +=1 if train.type == "cargo"
     end
+
+    "Quantity of passenger trains: #{count_pass}"
+    "Quantity of cargo trains: #{count_cargo}"
   end
 
   def depart_train(train)
@@ -42,19 +42,19 @@ class Route
   end
 
   def delete_middle(station)
-    @list.delete(station)  
+    @list.delete(station) if (@list[0] != station) && (@list[-1] != station) 
   end
 
   def show_stations 
-    @list.each { |stations| stations }
+    @list.each { |stations| puts stations }
   end
 end
 
 class Train
-  attr_reader :wagons, :speed 
+  attr_reader :num, :type, :wagons, :speed
 
-  def initialize(number, type, wagons)
-    @number = number
+  def initialize(num, type, wagons)
+    @num = num
     @type = type
     @wagons = wagons
     @speed = 0
@@ -84,7 +84,7 @@ class Train
   end
 
   def next_station
-    @current +=1 if @route.list.length != @current
+    @current +=1 if @route.list.last != @route.list[@current]
     @current
   end
 
