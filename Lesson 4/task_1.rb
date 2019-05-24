@@ -1,4 +1,6 @@
 class Station
+  attr_reader :trains
+
   def initialize(name)
     @name = name
     @trains = []
@@ -8,21 +10,19 @@ class Station
     @trains << train
   end
 
-  def show_trains
-    @trains.each { |train| puts train.num}
-  end
-
   def show_type
-    count_pass = 0
+    count_type_trains = {}
+    count_passenger = 0
     count_cargo = 0
 
     @trains.each do |train|
-      count_pass +=1 if train.type == "pass"
+      count_passenger +=1 if train.type == "passenger"
       count_cargo +=1 if train.type == "cargo"
     end
 
-    "Quantity of passenger trains: #{count_pass}"
-    "Quantity of cargo trains: #{count_cargo}"
+    count_type_trains["passenger"] = count_passenger
+    count_type_trains["cargo"] = count_cargo
+    count_type_trains
   end
 
   def depart_train(train)
@@ -44,17 +44,13 @@ class Route
   def delete_middle(station)
     @list.delete(station) if (@list[0] != station) && (@list[-1] != station) 
   end
-
-  def show_stations 
-    @list.each { |stations| puts stations }
-  end
 end
 
 class Train
-  attr_reader :num, :type, :wagons, :speed
+  attr_reader :type, :wagons, :speed
 
-  def initialize(num, type, wagons)
-    @num = num
+  def initialize(number, type, wagons)
+    @number = number
     @type = type
     @wagons = wagons
     @speed = 0
@@ -73,9 +69,8 @@ class Train
     @wagons += 1 if @speed == 0
   end
 
-  def remote_wagon
+  def remove_wagon
     @wagons -= 1 if @speed == 0 && @wagons > 0
-    "Stop to unhook the wagon" if @speed > 0
   end
 
   def add_route(route)
@@ -83,19 +78,23 @@ class Train
     @current = 0 unless @route.nil?
   end
 
+  def current_station
+    @route.list[@current]
+  end
+
+  def previous_station
+    @route.list[@current - 1] if @current != 0
+  end
+
   def next_station
-    @current +=1 if @route.list.last != @route.list[@current]
-    @current
+    @route.list[@current + 1]
   end
 
-  def prev_station
+  def move_to_previous_station
     @current -=1 if @current != 0
-    @current
   end
 
-  def show_route
-    @prev_st = @route.list[@current - 1]
-    @cur_st = @route.list[@current]
-    @next_st = @route.list[@current + 1]
+  def move_to_next_station
+    @current +=1 if @route.list.last != @route.list[@current]
   end
 end
