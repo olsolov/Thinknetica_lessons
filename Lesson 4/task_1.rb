@@ -10,19 +10,18 @@ class Station
     @trains << train
   end
 
-  def show_type
-    count_type_trains = {}
-    count_passenger = 0
-    count_cargo = 0
-
+  def trains_by_types
+    types =[]
+    trains_types = {}
+   
     @trains.each do |train|
-      count_passenger +=1 if train.type == "passenger"
-      count_cargo +=1 if train.type == "cargo"
+      types << train.type
+        types.each do |item|
+          trains_types[item] = types.count(item)
+        end
     end
 
-    count_type_trains["passenger"] = count_passenger
-    count_type_trains["cargo"] = count_cargo
-    count_type_trains
+    trains_types
   end
 
   def depart_train(train)
@@ -91,10 +90,10 @@ class Train
   end
 
   def move_to_previous_station
-    @current -=1 if @current != 0
+    @current -=1 if previous_station
   end
 
   def move_to_next_station
-    @current +=1 if @route.list.last != @route.list[@current]
+    @current +=1 if next_station
   end
 end
