@@ -7,18 +7,6 @@ class Train
     @train_wagons = []
   end
 
-  def accept_wagon(wagon)
-    if @speed == 0
-      unless @train_wagons.include?(wagon)
-        @train_wagons << wagon 
-      end
-    end
-  end
-
-  def remove_wagon(wagon)
-    @train_wagons.delete(wagon) if @speed == 0
-  end
-
   def speed=(speed)
     @speed = speed
     @speed = 0 if @speed < 0 
@@ -37,19 +25,24 @@ class Train
     @route.list[@current]
   end
 
-  def previous_station
-    @route.list[@current - 1] if @current != 0
-  end
-
-  def next_station
-    @route.list[@current + 1]
-  end
-
   def move_to_previous_station
     @current -=1 if previous_station
   end
 
   def move_to_next_station
     @current +=1 if next_station
+  end
+
+  protected
+  # сделала эти методы protected,
+  # т.к. напрямую они не вызываются,
+  # являются вспомогательными
+
+  def previous_station
+    @route.list[@current - 1] if @current != 0
+  end
+
+  def next_station
+    @route.list[@current + 1]
   end
 end

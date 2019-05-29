@@ -5,6 +5,18 @@ class CargoTrain < Train
 
   def initialize(number)
     super
-    @type = :грузовой
+    @type = :cargo
+  end
+
+  def accept_wagon(wagon)
+    if @speed == 0 && wagon.type == :cargo
+      unless @train_wagons.include?(wagon)
+        @train_wagons << wagon 
+      end
+    end
+  end
+
+  def remove_wagon(wagon)
+    @train_wagons.delete(wagon) if @speed == 0
   end
 end

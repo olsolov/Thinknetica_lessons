@@ -192,19 +192,13 @@ loop do
     choice_train = @trains[train_number - 1]
 
     if answer == "1"     
-      if choice_train.type == choice_wagon.type 
-        choice_train.accept_wagon(choice_wagon)
-        puts choice_train.train_wagons 
-      else
-        puts "Тип вагона не соответствует типу поезда или скорость > 0, добавить вагон нельзя"
-      end
+      choice_train.accept_wagon(choice_wagon)
+      puts choice_train.train_wagons 
     elsif answer == "2"
-      if choice_train.type == choice_wagon.type
-        choice_train.remove_wagon(choice_wagon)
-        puts choice_train.train_wagons 
-      else
-        puts "Тип вагона не соответствует типу поезда или скорость > 0, отцепить вагон нельзя"
-      end
+      choice_train.remove_wagon(choice_wagon)
+      puts choice_train.train_wagons 
+    else
+      puts "Такого ответа нет"
     end
 
   # переместить поезд вперед или назад по маршруту
