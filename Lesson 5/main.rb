@@ -14,11 +14,43 @@ class Main
     @routes = []
   end
 
-  protected
-  # сделала эти методы protected,
-  # т.к. напрямую они не вызываются,
-  # являются вспомогательными
+  def start
+    loop do
+      menu
 
+      choice = gets.strip
+
+      case choice
+      when "0"
+        break
+      when "1"
+        create_station
+      when "2"
+        create_train
+      when "3"
+        create_wagon
+      when "4"
+        create_route
+      when "5"
+        add_or_delete_station_in_route
+      when "6"
+        assign_route_to_train
+      when "7"
+        add_or_remove_wagon_by_train
+      when "8"
+        move_train_next_or_previous_station
+      when "9"
+        show_stations
+      when "10"
+        show_trains_by_station
+      else
+        puts "Такого ответа нет"
+      end
+    end
+  end
+
+  private
+  
   def show_stations
     @stations.each_with_index do |station, index|
       index +=1
@@ -234,43 +266,6 @@ class Main
     @trains.each do |train|
       if train.current_station == choice_station
         puts train
-      end
-    end
-  end
-
-  public
-
-  def start
-    loop do
-      menu
-
-      choice = gets.strip
-
-      case choice
-      when "0"
-        break
-      when "1"
-        create_station
-      when "2"
-        create_train
-      when "3"
-        create_wagon
-      when "4"
-        create_route
-      when "5"
-        add_or_delete_station_in_route
-      when "6"
-        assign_route_to_train
-      when "7"
-        add_or_remove_wagon_by_train
-      when "8"
-        move_train_next_or_previous_station
-      when "9"
-        show_stations
-      when "10"
-        show_trains_by_station
-      else
-        puts "Такого ответа нет"
       end
     end
   end
