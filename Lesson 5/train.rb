@@ -21,6 +21,10 @@ class Train
     @current = 0 unless @route.nil?
   end
 
+  def remove_wagon(wagon)
+    @train_wagons.delete(wagon) if @speed == 0
+  end
+  
   def current_station
     @route.list[@current]
   end

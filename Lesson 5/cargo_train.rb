@@ -1,4 +1,4 @@
-require_relative './train'
+require_relative 'train'
 
 class CargoTrain < Train
   attr_reader :type
@@ -14,9 +14,5 @@ class CargoTrain < Train
         @train_wagons << wagon 
       end
     end
-  end
-
-  def remove_wagon(wagon)
-    @train_wagons.delete(wagon) if @speed == 0
   end
 end
