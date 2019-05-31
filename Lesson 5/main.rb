@@ -50,32 +50,32 @@ class Main
   end
 
   private
-  
+
   def show_stations
     @stations.each_with_index do |station, index|
       index +=1
-      puts "#{index}. #{station}"
+      puts "#{index}. #{station.name}"
     end
   end
 
   def show_trains
     @trains.each_with_index do |train, index|
       index +=1
-      puts "#{index}. #{train}"
+      puts "#{index}. № поезда: #{train.number}"
     end
   end
 
   def show_routes
     @routes.each_with_index do |route, index|
       index +=1
-      puts "#{index}. #{route}"
+      puts "#{index}. Маршрут: #{route.list[0].name} - #{route.list[-1].name}"
     end
   end
 
   def show_wagons
     @wagons.each_with_index do |wagon, index|
       index +=1
-      puts "#{index}. #{wagon}"
+      puts "#{index}. Вагон: #{wagon.type}"
     end
   end
 
@@ -265,7 +265,7 @@ class Main
 
     @trains.each do |train|
       if train.current_station == choice_station
-        puts train
+        puts "На станции #{choice_station.name} находится: поезд №#{train.number}"
       end
     end
   end
