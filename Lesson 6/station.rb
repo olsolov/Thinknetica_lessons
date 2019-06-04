@@ -15,6 +15,7 @@ class Station
     @name = name
     @trains = []
     self.class.stations << self
+    self.register_instance
   end
 
   def self.all
@@ -45,6 +46,6 @@ class Station
 end
 
 # проверка
-s1 = Station.new("mos")
-s2 = Station.new("spb")
-Station.all
+# s1 = Station.new("mos")
+# s2 = Station.new("spb")
+# Station.all

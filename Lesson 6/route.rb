@@ -7,6 +7,7 @@ class Route
 
   def initialize(start, finish)
     @list = [start, finish]
+    self.register_instance
   end
 
   def add_middle(station)

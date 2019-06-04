@@ -18,6 +18,7 @@ class Train
     @speed = 0
     @train_wagons = []
     self.class.trains << self
+    self.register_instance
   end
 
   def self.find(find_number)
@@ -70,8 +71,8 @@ class Train
 end
 
 # проверка
-t1 = Train.new(111)
-t2 = Train.new(222)
-Train.find(111)
-Train.find(222)
-Train.find(333)
+# t1 = Train.new(111)
+# t2 = Train.new(222)
+# Train.find(111)
+# Train.find(222)
+# Train.find(333)

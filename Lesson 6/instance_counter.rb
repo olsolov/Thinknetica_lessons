@@ -5,22 +5,22 @@ module InstanceCounter
   end
 
   module ClassMethods
-    @@instances = 0 
-    
-    attr_reader :instances
+    attr_writer :instances
+
+    def instances 
+      @instances ||= 0
+    end
 
     def self.instances
-      @@instances
+      @instances
     end
   end
 
   module InstanceMethods
-    def initialize
-      self.register_instance
-    end
+    protected
 
     def register_instance
-      @@instances +=1
+      self.class.instances +=1
     end
   end
 end
