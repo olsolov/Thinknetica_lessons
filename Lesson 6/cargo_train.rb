@@ -3,7 +3,10 @@ require_relative 'train'
 class CargoTrain < Train
   attr_reader :type
 
+  @trains = []
+
   def initialize(number)
+    self.class.trains << self
     super
     @type = :cargo
   end
@@ -16,3 +19,8 @@ class CargoTrain < Train
     end
   end
 end
+
+# проверка
+# t1 = CargoTrain.new(111)
+# t2 = CargoTrain.new(222)
+# p CargoTrain.instances

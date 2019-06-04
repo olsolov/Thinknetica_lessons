@@ -11,9 +11,6 @@ module InstanceCounter
       @instances ||= 0
     end
 
-    def self.instances
-      @instances
-    end
   end
 
   module InstanceMethods
