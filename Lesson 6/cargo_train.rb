@@ -16,8 +16,3 @@ class CargoTrain < Train
     end
   end
 end
-
-# проверка
-# t1 = CargoTrain.new(111)
-# t2 = CargoTrain.new(222)
-# p CargoTrain.instances

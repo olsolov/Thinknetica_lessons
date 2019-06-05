@@ -21,6 +21,10 @@ class Train
     @@trains[find_number]
   end
 
+  def self.all
+    @@trains.values
+  end
+
   def speed=(speed)
     @speed = speed
     @speed = 0 if @speed < 0 
@@ -64,10 +68,3 @@ class Train
     @route.list[@current + 1]
   end
 end
-
-# проверка
-# t1 = Train.new(111)
-# t2 = Train.new(222)
-# Train.find(111)
-# Train.find(222)
-# Train.find(333)

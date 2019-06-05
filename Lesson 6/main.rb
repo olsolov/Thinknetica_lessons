@@ -9,8 +9,6 @@ require_relative 'cargo_wagon'
 
 class Main
   def initialize
-    @stations =[]
-    @trains = []
     @wagons = []
     @routes = []
   end
@@ -52,17 +50,31 @@ class Main
 
   private
 
+  def menu
+    puts "----------------------------"
+    puts "Введите 1, если вы хотите создать станцию"
+    puts "Введите 2, если вы хотите создать поезд"
+    puts "Введите 3, если вы хотите создать вагон"
+    puts "Введите 4, если вы хотите создать маршрут"
+    puts "Введите 5, если вы хотите добавить станцию в маршрут или удалить"
+    puts "Введите 6, если вы хотите назначить маршрут поезду"
+    puts "Введите 7, если вы хотите добавить вагон поезду или отцепить"
+    puts "Введите 8, если вы хотите переместить поезд вперед или назад по маршруту"
+    puts "Введите 9, если вы хотите посмотреть список станций"
+    puts "Введите 10, если вы хотите посмотреть список поездов на станции"
+    puts "Введите 0, если хотите закончить программу"
+    puts "----------------------------"
+  end
+
   def show_stations
-    @stations.each_with_index do |station, index|
-      index +=1
-      puts "#{index}. #{station.name}"
+    Station.all.each do |station|
+      puts station.name
     end
   end
 
   def show_trains
-    @trains.each_with_index do |train, index|
-      index +=1
-      puts "#{index}. № поезда: #{train.number}, тип: #{train.type}"
+    Train.all.each do |train|
+      puts "№ поезда: #{train.number}, тип: #{train.type}"
     end
   end
 
@@ -84,29 +96,12 @@ class Main
     print "Введите название станции: "
     name = gets.strip.capitalize
     station = Station.new(name)
-    @stations << station
     puts "Вы создали станцию: #{station.name}"
-  end
-
-  def menu
-    puts "----------------------------"
-    puts "Введите 1, если вы хотите создать станцию"
-    puts "Введите 2, если вы хотите создать поезд"
-    puts "Введите 3, если вы хотите создать вагон"
-    puts "Введите 4, если вы хотите создать маршрут"
-    puts "Введите 5, если вы хотите добавить станцию в маршрут или удалить"
-    puts "Введите 6, если вы хотите назначить маршрут поезду"
-    puts "Введите 7, если вы хотите добавить вагон поезду или отцепить"
-    puts "Введите 8, если вы хотите переместить поезд вперед или назад по маршруту"
-    puts "Введите 9, если вы хотите посмотреть список станций"
-    puts "Введите 10, если вы хотите посмотреть список поездов на станции"
-    puts "Введите 0, если хотите закончить программу"
-    puts "----------------------------"
-  end
+  end  
 
   def create_train
     print "Введите номер поезда: "
-    number = gets.strip
+    number = gets.to_i
 
     print "Введите 1, если вы хотите создать пассажирский поезд, 2 - если грузовой: "
     answer = gets.strip
@@ -119,7 +114,6 @@ class Main
       puts "Такого ответа нет"
     end
 
-    @trains << train
     puts "Вы создали поезд: № #{train.number}, тип: #{train.type}"
   end
 
@@ -140,20 +134,20 @@ class Main
   end
 
   def create_route
-    puts "Введите порядковый номер первой станции в маршруте:"
+    puts "Введите имя первой станции в маршруте:"
     show_stations
-    start_station_number = gets.to_i
-    choice_station_start = @stations[start_station_number - 1]
+    start_station = gets.strip.capitalize
+    choice_start_station = Station.find(start_station)
 
-    puts "Введите порядковый номер последней станции в маршруте:"
+    puts "Введите имя последней станции в маршруте:"
     show_stations
-    finish_station_number = gets.to_i
-    choice_station_finish = @stations[finish_station_number - 1]
+    finish_station = gets.strip.capitalize
+    choice_finish_station = Station.find(finish_station)
 
-    if choice_station_start == choice_station_finish
+    if choice_start_station == choice_finish_station
       puts "Начальная и конечная станции не могут совпадать, не удалось создать маршрут"
     else
-      route = Route.new(choice_station_start, choice_station_finish)
+      route = Route.new(choice_start_station, choice_finish_station)
     end
 
     @routes << route
@@ -163,7 +157,7 @@ class Main
 
   def add_or_delete_station_in_route
     print "Введите 1, если вы хотите добавить станцию в маршрут, 2 - если удалить: "
-    answer = gets.strip
+    answer = gets.to_i
 
     puts "Введите порядковый номер маршрута: "
     show_routes
@@ -171,16 +165,16 @@ class Main
 
     choice_route = @routes[route_number - 1]
 
-    puts "Введите порядковый номер станции: "
+    puts "Введите имя станции: "
     show_stations
     
-    station_number = gets.to_i
+    choice_name = gets.strip.capitalize
 
-    choice_station = @stations[station_number - 1]
+    choice_station = Station.find(choice_name)
 
-    if answer == "1"
+    if answer == 1
       choice_route.add_middle(choice_station)
-    elsif answer == "2"
+    elsif answer == 2
       choice_route.delete_middle(choice_station)
     else
       puts "Такого ответа нет"
@@ -197,56 +191,59 @@ class Main
     show_routes
     route_number = gets.to_i
 
-    puts "Введите порядковый номер поезда: "
+    puts "Введите номер поезда: "
     show_trains
     train_number = gets.to_i
 
     choice_route = @routes[route_number - 1]
-    choice_train = @trains[train_number - 1]
+    choice_train = Train.find(train_number)
     
     choice_train.add_route(choice_route)
+
+    puts "Вы назначили маршрут #{choice_route.list[0].name} - #{choice_route.list[-1].name} поезду № #{choice_train.number}"
   end
 
   def add_or_remove_wagon_by_train
     print "Введите 1, если вы хотите добавить вагон, 2 - если отцепить: "
-    answer = gets.strip
+    answer = gets.to_i
 
     puts "Введите порядковый номер вагона:"
     show_wagons
     wagon_number = gets.to_i
 
-    puts "Введите порядковый номер поезда:"
+    puts "Введите номер поезда:"
     show_trains
     train_number = gets.to_i
 
     choice_wagon = @wagons[wagon_number - 1]
-    choice_train = @trains[train_number - 1]
-
-    if answer == "1"
+    choice_train = Train.find(train_number)
+    
+    if answer == 1
       choice_train.accept_wagon(choice_wagon)
       puts "Вы прицепили вагон к поезду № #{choice_train.number}"
-    elsif answer == "2"
+    elsif answer == 2
       choice_train.remove_wagon(choice_wagon)
       puts "Вы отцепили вагон от поезда № #{choice_train.number}"
     else
       puts "Такого ответа нет"
     end
-    # проверка choice_train.train_wagons
+    # проверка 
+    # p choice_train.train_wagons
   end
 
   def move_train_next_or_previous_station
     print "Введите 1, если вы хотите переместить поезд вперед по маршруту, 2 - если назад: "
-    answer = gets.strip
+    answer = gets.to_i
 
-    puts "Введите порядковый номер поезда: "
+    puts "Введите номер поезда:"
     show_trains
     train_number = gets.to_i
 
-    choice_train = @trains[train_number - 1]
+    choice_train = Train.find(train_number)
 
-    if answer == "1"
+    if answer == 1
       choice_train.move_to_next_station
-    elsif answer == "2"
+    elsif answer == 2
       choice_train.move_to_previous_station
     else
       puts "Такого ответа нет"
@@ -254,14 +251,13 @@ class Main
   end
 
   def show_trains_by_station
-    puts "Введите порядковый номер станции: "
+    puts "Введите имя станции:"
     show_stations
-    station_number = gets.to_i
+    station_name = gets.strip.capitalize
 
-    choice_station = @stations[station_number - 1]
-
-    @trains.each do |train|
-      if train.current_station == choice_station
+    choice_station = Station.find(station_name)
+    Train.all.each do |train|
+      if train.current_station.name == choice_station.name
         puts "На станции #{choice_station.name} находится: поезд № #{train.number}"
       end
     end
