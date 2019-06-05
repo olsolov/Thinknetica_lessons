@@ -3,10 +3,7 @@ require_relative 'train'
 class CargoTrain < Train
   attr_reader :type
 
-  @trains = []
-
   def initialize(number)
-    self.class.trains << self
     super
     @type = :cargo
   end

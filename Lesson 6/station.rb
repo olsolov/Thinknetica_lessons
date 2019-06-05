@@ -3,23 +3,19 @@ require_relative 'instance_counter'
 class Station
   include InstanceCounter
 
-  @stations = []
-
-  class << self
-    attr_reader :stations
-  end
+  @@stations = []
 
   attr_reader :name, :trains
 
   def initialize(name)
     @name = name
     @trains = []
-    self.class.stations << self
+    @@stations << self
     self.register_instance
   end
 
   def self.all
-    p self.stations
+    @@stations
   end
 
   def accept_train(train)
@@ -48,4 +44,3 @@ end
 # проверка
 # s1 = Station.new("mos")
 # s2 = Station.new("spb")
-# Station.all

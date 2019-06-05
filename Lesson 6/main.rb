@@ -9,6 +9,7 @@ require_relative 'cargo_wagon'
 
 class Main
   def initialize
+    @stations =[]
     @trains = []
     @wagons = []
     @routes = []
@@ -52,7 +53,10 @@ class Main
   private
 
   def show_stations
-    Station.all
+    @stations.each_with_index do |station, index|
+      index +=1
+      puts "#{index}. #{station.name}"
+    end
   end
 
   def show_trains
@@ -79,8 +83,8 @@ class Main
   def create_station
     print "Введите название станции: "
     name = gets.strip.capitalize
-
     station = Station.new(name)
+    @stations << station
     puts "Вы создали станцию: #{station.name}"
   end
 
