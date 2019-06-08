@@ -18,6 +18,6 @@ class Wagon
 
   protected
   def validate!
-    raise "Такого типа нет" unless @type == :passenger || @type == :cargo
+    raise "Такого типа вагонов нет" unless @type == :passenger || @type == :cargo
   end
 end

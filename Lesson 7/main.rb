@@ -108,13 +108,12 @@ class Main
     print "Введите 1, если вы хотите создать пассажирский поезд, 2 - если грузовой: "
     answer = gets.to_i
 
-    raise "Такого типа поезда нет" unless answer == 1 || answer == 2 
+    puts "Такого типа поезда нет" unless answer == 1 || answer == 2 
 
-    if answer == 1
-      train = PassengerTrain.new(number) 
-    elsif answer == 2
-      train = CargoTrain.new(number)
-    end
+    train = PassengerTrain.new(number) if answer == 1
+
+    train = CargoTrain.new(number) if answer == 2
+
     puts "Вы создали поезд: № #{train.number}, тип: #{train.type}"
 
     rescue RuntimeError => e
@@ -145,17 +144,21 @@ class Main
     finish_station = gets.strip.capitalize
     choice_finish_station = Station.find(finish_station)
 
-    route = Route.new(choice_start_station, choice_finish_station)
-    @routes << route
-    puts "Вы создали маршрут: #{route.list[0].name} - #{route.list[1].name}"
-    
+    if choice_start_station == choice_finish_station
+      puts "Начальная и конечная станции не могут совпадать, не удалось создать маршрут"
+    else
+      route = Route.new(choice_start_station, choice_finish_station)
+      @routes << route
+      puts "Вы создали маршрут: #{route.list[0].name} - #{route.list[1].name}"
+    end
+
     rescue RuntimeError => e
       puts e.message
   end
 
   def add_or_delete_station_in_route
 
-    raise "Пока не создано ни одного маршрута" if Route.instances == 0
+    puts "Пока не создано ни одного маршрута" if Route.instances == 0
 
     print "Введите 1, если вы хотите добавить станцию в маршрут, 2 - если удалить: "
     answer = gets.to_i
@@ -173,7 +176,7 @@ class Main
 
     choice_station = Station.find(choice_name)
 
-    raise "Такого ответа нет" unless answer == 1 || answer == 2 
+    puts "Такого ответа нет" unless answer == 1 || answer == 2 
 
     if answer == 1
       choice_route.add_middle(choice_station)

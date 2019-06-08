@@ -31,6 +31,5 @@ class Route
   def validate!
     raise "Начальная станция не может быть пустой" if @start.nil?
     raise "Конечная станция не может быть пустой" if @finish.nil?
-    raise "Начальная и конечная станции не могут совпадать" if @start == @finish
   end
 end
