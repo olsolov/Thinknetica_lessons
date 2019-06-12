@@ -15,17 +15,11 @@ class Station
     self.register_instance
   end
 
-  def yield_method(items)
-    items.each do |item|
-      yield(item)
+  def trains_by_station
+    @trains.each do |train|
+      yield(train)
     end
   end
-
-  # def yield_trains_by_station
-  #   @trains.each do |train|
-  #     yield(train)
-  #   end
-  # end
 
   def valid?
     validate!
@@ -65,7 +59,7 @@ class Station
 
   protected
   def validate!
-    raise "Название станции не может быть пустым" if @name.length == 0
-    raise "Название станции не может быть менее 4 букв" if @name.length < 4
+    raise 'Название станции не может быть пустым' if @name.length == 0
+    raise 'Название станции не может быть менее 4 букв' if @name.length < 4
   end
 end

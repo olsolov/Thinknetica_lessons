@@ -26,6 +26,6 @@ class PassengerWagon < Wagon
 
   protected
   def validate!
-    raise "В вагоне должны быть места для пассажиров" unless @total_seats > 0
+    raise 'В вагоне должны быть места для пассажиров' unless @total_seats > 0
   end
 end

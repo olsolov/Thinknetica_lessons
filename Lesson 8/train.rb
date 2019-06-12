@@ -20,8 +20,8 @@ class Train
     self.register_instance
   end
 
-  def yield_trains_wagons
-    @trains_wagons.each do |wagon|
+  def wagons_by_trains
+    @train_wagons.each do |wagon|
       yield(wagon)
     end
   end 
@@ -52,27 +52,36 @@ class Train
   def add_route(route)
     @route = route
     @current = 0 unless @route.nil?
+    current_station.accept_train(self)
   end
 
   def remove_wagon(wagon)
     @train_wagons.delete(wagon) if @speed == 0
   end
-  
+    
   def current_station
     @route.list[@current]
   end
 
   def move_to_previous_station
-    @current -=1 if previous_station
+    if previous_station
+      previous_station.accept_train(self)
+      current_station.depart_train(self)
+      @current -=1
+    end
   end
 
   def move_to_next_station
-    @current +=1 if next_station
+    if next_station 
+      next_station.accept_train(self)
+      current_station.depart_train(self)
+      @current +=1
+    end    
   end
 
   protected
   def validate!
-    # raise "Номер поезда не соответствует формату" if @number !~ NUMBER_FORMAT
+    raise 'Номер поезда не соответствует формату' if @number !~ NUMBER_FORMAT
   end
 
   def previous_station
@@ -83,12 +92,3 @@ class Train
     @route.list[@current + 1]
   end
 end
-
-# yield_trains_wagons {|x| puts "Вагон #{x}"}
-t = PassengerTrain.new(11111)
-w = PassengerWagon.new(10)
-w1 = PassengerWagon.new(10)
-t.accept_wagon(w)
-t.accept_wagon(w1)
-t.train_wagons
-# t.yield_trains_wagons{|x| puts "Номер вагона: #{rand(10..99)}, тип вагона: #{x.type}"}

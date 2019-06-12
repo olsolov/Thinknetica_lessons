@@ -26,6 +26,6 @@ class CargoWagon < Wagon
 
   protected
   def validate!
-    raise "У вагона должен быть общий объем" unless @total_volume > 0
+    raise 'У вагона должен быть общий объем' unless @total_volume > 0
   end
 end
