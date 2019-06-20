@@ -8,6 +8,7 @@ require_relative 'cargo_train'
 require_relative 'wagon'
 require_relative 'passenger_wagon'
 require_relative 'cargo_wagon'
+require 'pry-byebug'
 
 class Main
   def initialize
@@ -117,13 +118,13 @@ class Main
 
   def show_routes
     @routes.each_with_index do |route, index|
-      puts "#{index += 1}. Маршрут: #{route.list.first.name} - #{route.list.last.name}"
+      puts "#{index + 1}. Маршрут: #{route.list.first.name} - #{route.list.last.name}"
     end
   end
 
   def show_wagons
     @wagons.each_with_index do |wagon, index|
-      puts "#{index += 1}. Вагон: #{wagon.type}"
+      puts "#{index + 1}. Вагон: #{wagon.type}"
     end
   end
 
@@ -132,6 +133,7 @@ class Main
     name = gets.strip.capitalize
 
     station = Station.new(name)
+
     puts "Вы создали станцию: #{station.name}"
   rescue RuntimeError => e
     puts e.message
@@ -234,7 +236,7 @@ class Main
 
     puts 'Список станций в маршруте:'
     choice_route.list.each_with_index do |station, index|
-      puts "#{index += 1}. #{station.name}"
+      puts "#{index + 1}. #{station.name}"
     end
   rescue RuntimeError => e
     puts e.message
@@ -349,7 +351,7 @@ class Main
     if choice_train.type == :passenger
       puts 'Введите порядковый номер вагона, в котором вы хотите занять место: '
       choice_train.train_wagons.each_with_index do |wagon, index|
-        puts "#{index += 1}. Вагон: #{wagon.type}"
+        puts "#{index + 1}. Вагон: #{wagon.type}"
       end
 
       answer = gets.to_i
@@ -369,7 +371,7 @@ class Main
     if choice_train.type == :cargo
       puts 'Введите порядковый № вагона, в котором вы хотите занять объем:'
       choice_train.train_wagons.each_with_index do |wagon, index|
-        puts "#{index += 1}. Вагон: #{wagon.type}"
+        puts "#{index + 1}. Вагон: #{wagon.type}"
       end
       answer = gets.to_i
       choice_wagon = choice_train.train_wagons[answer - 1]
