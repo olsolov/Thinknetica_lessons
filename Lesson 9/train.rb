@@ -7,6 +7,7 @@ require_relative 'accessors'
 class Train
   include ProducerCompany
   include InstanceCounter
+  include Validation
   extend Accessors
 
   @@trains = {}
@@ -14,7 +15,7 @@ class Train
   attr_reader :number, :speed, :train_wagons, :current, :route
   attr_accessor_with_history :par, :par2
   strong_attr_accessor :par3, Integer
-  validate :number, :format, /^[a-zа-я0-9]{3}-*[a-f0-9]{2}$/i
+  validate :number, :format, NUMBER_FORMAT
 
   NUMBER_FORMAT = /^[a-zа-я0-9]{3}-*[a-f0-9]{2}$/i.freeze
 
