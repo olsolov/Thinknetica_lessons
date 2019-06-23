@@ -1,13 +1,19 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
+require_relative 'validation'
 
 class Station
   include InstanceCounter
+  include Validation
+
+  NAME_FORMAT = /^[А-Я]{1}[а-я]{3}[а-я]*/.freeze
 
   @@stations = {}
 
   attr_reader :name, :trains
+  validate :name, :presence
+  validate :name, :format, NAME_FORMAT
 
   def initialize(name)
     @name = name
@@ -21,12 +27,6 @@ class Station
     @trains.each do |train|
       yield(train)
     end
-  end
-
-  def valid?
-    validate!
-  rescue StandardError
-    false
   end
 
   def self.all
@@ -57,12 +57,5 @@ class Station
 
   def depart_train(train)
     @trains.delete(train)
-  end
-
-  protected
-
-  def validate!
-    raise 'Название станции не может быть пустым' if @name.length.zero?
-    raise 'Название станции не может быть менее 4 букв' if @name.length < 4
   end
 end

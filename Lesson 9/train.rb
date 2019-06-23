@@ -3,12 +3,15 @@
 require_relative 'producer_company'
 require_relative 'instance_counter'
 require_relative 'accessors'
+require_relative 'validation'
 
 class Train
   include ProducerCompany
   include InstanceCounter
-  include Validation
   extend Accessors
+  include Validation
+
+  NUMBER_FORMAT = /^[a-zа-я0-9]{3}-*[a-f0-9]{2}$/i.freeze
 
   @@trains = {}
 
@@ -16,8 +19,6 @@ class Train
   attr_accessor_with_history :par, :par2
   strong_attr_accessor :par3, Integer
   validate :number, :format, NUMBER_FORMAT
-
-  NUMBER_FORMAT = /^[a-zа-я0-9]{3}-*[a-f0-9]{2}$/i.freeze
 
   def initialize(number)
     @number = number
@@ -32,12 +33,6 @@ class Train
     @train_wagons.each do |wagon|
       yield(wagon)
     end
-  end
-
-  def valid?
-    validate!
-  rescue StandardError
-    false
   end
 
   def self.find(find_number)
@@ -88,10 +83,6 @@ class Train
   end
 
   protected
-
-  def validate!
-    raise 'Номер поезда не соответствует формату' if @number !~ NUMBER_FORMAT
-  end
 
   def previous_station
     @route.list[@current - 1] if @current != 0

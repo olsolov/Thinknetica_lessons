@@ -7,6 +7,8 @@ module Validation
   end
 
   module ClassMethods
+    attr_reader :validations
+
     def validate(name, type, *args)
       @validations ||= []
 
@@ -24,13 +26,15 @@ module Validation
     end
 
     def validate_type(value, klass)
-      raise "The attribute value doesn't match the class" if value.is_a?(klass)
+      raise "The attribute value doesn't match the class" unless value.is_a?(klass)
     end
 
     def validate!
       self.class.validations.each do |validation|
         value = instance_variable_get("@#{validation[:name]}")
-        send("validate_#{validation[:type]}, value, *args}")
+        method_name = "validate_#{validation[:type]}"
+        args = validation[:args]
+        send(method_name, value, args)
       end
     end
 

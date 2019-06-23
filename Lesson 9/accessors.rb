@@ -7,12 +7,16 @@ module Accessors
       history_var = "@#{attribute}_history".to_sym
 
       define_method(attribute) { instance_variable_get(attribute_var) }
-      define_method("#{attribute}_history") { instance_variable_get(history_var) }
+      define_method("#{attribute}_history".to_sym) { instance_variable_get(history_var) }
 
       define_method("#{attribute}=".to_sym) do |value|
+        if instance_variable_get(attribute_var)
+          history = instance_variable_get(history_var)
+          history << instance_variable_get(attribute_var)
+        else
+          instance_variable_set(history_var, [])
+        end
         instance_variable_set(attribute_var, value)
-        instance_variable_set(history_var, []) unless instance_variable_get(history_var)
-        instance_variable_get(history_var) << value
       end
     end
   end
