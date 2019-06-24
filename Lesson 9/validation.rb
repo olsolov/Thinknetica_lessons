@@ -34,7 +34,7 @@ module Validation
         value = instance_variable_get("@#{validation[:name]}")
         method_name = "validate_#{validation[:type]}"
         args = validation[:args]
-        send(method_name, value, args)
+        send(method_name, value, *args)
       end
     end
 
